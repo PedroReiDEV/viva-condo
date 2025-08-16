@@ -11,13 +11,20 @@ type Morador = {
     return morador.primeiroNome + ' ' + morador.sobrenome
   }
   const morador = {
-    primeiroNome: 'Sandro',
-    sobrenome: 'pereira'
+    primeiroNome: 'I am',
+    sobrenome: 'BATMAN'
   };
+
+  function obterSaudacao(morador:null | Morador) {
+    if (morador) {
+      return <span>Olá, {formatarNomeMorador(morador)}!</span>
+    }
+    return <span>Olá, Estranho!!!</span>
+  }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-    <h1 className="text-4x1 font-bold">{formatarNomeMorador(morador)}</h1>
+    <h1 className="text-2x1 font-semibold">{obterSaudacao(null)}</h1>
     </div>
   )
 }
