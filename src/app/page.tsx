@@ -2,7 +2,7 @@
 
 export default function Home() {
 
-  const element = <span>Olá mundo, tudo bem?</span>;
+  const element = <span>{2+2}</span>;
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <h1 className="text-4xl font-bold">{element}</h1>
