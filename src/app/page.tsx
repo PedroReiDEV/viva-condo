@@ -23,8 +23,9 @@ type Morador = {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-    <h1 className="text-2x1 font-semibold">{obterSaudacao(null)}</h1>
+    <div className="flex flex-col items-center justify-center h-screen bg-black"><div>
+    <p className="bg-sky-600 text-blue-50 rounded-md px-[15px py-[10px] ...">{obterSaudacao(morador)}"</p>
+    </div>
     </div>
   )
 }
