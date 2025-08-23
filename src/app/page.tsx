@@ -11,8 +11,8 @@ export default function Home() {
   }
 
   const morador: Morador = {
-    primeiroNome: "Sandro",
-    sobrenome: "Pereira",
+    primeiroNome: "Pedro",
+    sobrenome: "Silva",
   };
 
   function obterSaudacao(morador: null | Morador) {

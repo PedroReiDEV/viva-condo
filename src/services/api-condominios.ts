@@ -9,7 +9,7 @@ export interface ICondominio {
     id_client: number;
 }
 
-export const getCondominio =async () =>{
+export const getCondominio = async () =>{
 
     const response = await fetch('https://raw.githubusercontent.com/vagner107/viva-condo/refs/heads/main/src/app/condominios/api_condominio.json')
     //https://fatec.short.gy/condominios

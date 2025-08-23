@@ -1,6 +1,21 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+import { getCondominio, ICondominio } from "@/services/api-condominios";
 export default function ListaCondominios() {
+
+    const [condominio, setCondominios] = useState<ICondominio[]>([])
+
+    useEffect(() => {
+        const buscarCondominios = async () => {
+            const data = await getCondominio()
+            console.log(data)
+            setCondominios(data)
+        }
+
+        buscarCondominios()
+    }, [])
     return (
         <div id="p-6 max-w-full">
             <div className="mb-4 flex items-center justify-between gap-4">
@@ -11,21 +26,33 @@ export default function ListaCondominios() {
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th className="px-4 pt-3 text-left text-xs font-medium text-gray-500 tracking-wider w-12">#</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">Nome</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">Endereço</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">Cidade</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">UF</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">Tipo</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">Ação</th>
+                            <th className="px-4 pt-3 whitespace-nowrap text-sm text-gray-500 w-12">#</th>
+                            <th className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Nome</th>
+                            <th className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Endereço</th>
+                            <th className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Cidade</th>
+                            <th className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">UF</th>
+                            <th className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Tipo</th>
+                            <th className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">Ação</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                        <tr>
-                            <td className="px-4 py-3 text-em text-gray-700" colSpan={7}>
-                                Nenhum condominio encontrado.
-                            </td>
+                        {condominio.length === 0 ? (
+                            <tr>
+                            <td className="px-4 py-3 text-em text-gray-700" colSpan={7}>Nenhum condominio encontrado.</td>
+                            </tr>
+                    ) : (      
+                        condominio.map((condominio, index) => (
+                            <tr key={condominio.id_condominio} className="hover:bg-gray-50">
+                            <td className="px-4 pt-3 whitespace-nowrap text-sm text-gray-500">{String(index + 1)}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{condominio.nome_condominio}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{condominio.endereco_condominio}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{condominio.cidade_condominio}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{condominio.uf_condominio}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{condominio.tipo_condominio}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500"></td>
                         </tr>
+                        )) 
+                    )}          
                     </tbody>
                 </table>
             </div>
