@@ -3,19 +3,31 @@
 import { useEffect, useState } from "react";
 
 import { getCondominio, ICondominio } from "@/services/api-condominios";
-export default function ListaCondominios() {
-
+import { error } from "console";
+export default function ListaCondominios() { 
     const [condominio, setCondominios] = useState<ICondominio[]>([])
+const [loading, setLoading] = useState(true)
+const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         const buscarCondominios = async () => {
-            const data = await getCondominio()
-            console.log(data)
-            setCondominios(data)
+            try{
+                const data = await getCondominio()
+                if((data as any)?.error){
+                    setError((data as any).error)
+                    return
+                }
+                setCondominios(data);
+            } catch(err:any){
+                setError(err.message || String(err))
+            }finally{
+                setLoading(false);
+            }
         }
 
         buscarCondominios()
     }, [])
+
     return (
         <div id="p-6 max-w-full">
             <div className="mb-4 flex items-center justify-between gap-4">
@@ -36,7 +48,15 @@ export default function ListaCondominios() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                        {condominio.length === 0 ? (
+                        {loading ? (
+                            <tr>
+                                <td className="px-a py-3 text-center text-gray-500" colSpan={7}>Carregando Condomínios...</td>
+                            </tr>
+                        ):error?(
+                            <tr>
+                                <td className="px-4 py-3 text-center text-red-500" colSpan={7}>Erro:{error}</td>
+                            </tr>
+                        ) : condominio.length === 0 ? (
                             <tr>
                             <td className="px-4 py-3 text-em text-gray-700" colSpan={7}>Nenhum condominio encontrado.</td>
                             </tr>
