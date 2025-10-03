@@ -1,14 +1,14 @@
 import { createClient } from "@/utils/supabase/server";
 
 export interface ICondominio {
-    id_condominio: Number;
-    idadministradora: Number;
-    nome_condominio: String;
-    endereco_condominio: String;
-    cidade_condominio: String;
-    uf_condominio: String;
-    tipo_condominio: String;
-    created_at: String;
+    id_condominio: number;
+    idadministradora: number;
+    nome_condominio: string;
+    endereco_condominio: string;
+    cidade_condominio: string;
+    uf_condominio: string;
+    tipo_condominio: string;
+    created_at: string;
 }
 
 export async function getCondominios() {

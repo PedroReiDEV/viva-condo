@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getCondominio, ICondominio } from "@/services/api-condominios";
 import { error } from "console";
 export default function ListaCondominios() { 
-    const [condominio, setCondominios] = useState<ICondominio[]>([])
+const [condominio, setCondominios] = useState<ICondominio[]>([])
 const [loading, setLoading] = useState(true)
 const [error, setError] = useState<string | null>(null)
 
