@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, Building2, Users, PanelsTopLeft } from "lucide-react";
+import { LogOut, Building2, Users } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 
@@ -14,10 +14,10 @@ export default function Menu() {
 
   const nav = [
     { href: "/condominios", label: "Condomínios", icon: Building2 },
-    { href: "/usuarios", label: "Usuários", icon: Users },
+    { href: "/usuarios", label: "Usuarios", icon: Users },
   ];
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => pathname?.startsWith(href);
 
   const handleLogout = async () => {
     try {
@@ -30,13 +30,12 @@ export default function Menu() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 border-r bg-white/90 backdrop-blur-sm shadow-sm flex flex-col">
-      <div className="px-4 py-5 flex items-center gap-2 border-b">
-        <PanelsTopLeft className="h-5 w-5" />
-        <span className="font-semibold tracking-wide">Viva Condo</span>
+    <aside className="fixed left-0 top-0 h-screen w-60 border-r bg-white">
+      <div className="px-4 pt-5 pb-3">
+        <span className="text-[18px] font-semibold text-zinc-900">Viva Condo</span>
       </div>
 
-      <nav className="flex-1 p-2">
+      <nav className="px-3">
         <ul className="space-y-1">
           {nav.map((item) => {
             const Icon = item.icon;
@@ -45,16 +44,21 @@ export default function Menu() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={[
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-colors",
-                    active
-                      ? "bg-blue-600 text-white"
-                      : "text-zinc-800 hover:bg-zinc-100",
-                  ].join(" ")}
                   aria-current={active ? "page" : undefined}
+                  className={[
+                    "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium select-none transition-colors",
+                    active
+                      ? "bg-blue-100 text-blue-600"       
+                      : "text-zinc-600 hover:bg-zinc-100", 
+                  ].join(" ")}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <Icon
+                    className={[
+                      "h-4 w-4",
+                      active ? "text-blue-600" : "text-zinc-400",
+                    ].join(" ")}
+                  />
+                  <span>{item.label}</span>
                 </Link>
               </li>
             );
@@ -62,13 +66,14 @@ export default function Menu() {
         </ul>
       </nav>
 
-      <div className="p-2 border-t">
+      <div className="px-3 mt-4">
+        <div className="h-px bg-zinc-200 my-3" />
         <button
           onClick={handleLogout}
           disabled={loading}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-800 hover:bg-zinc-100 disabled:opacity-50"
+          className="w-full inline-flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-100 disabled:opacity-50"
         >
-          <LogOut className="h-4 w-4" />
+          <LogOut className="h-4 w-4 text-zinc-400" />
           {loading ? "Saindo..." : "Sair"}
         </button>
       </div>

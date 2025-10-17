@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Geist, Geist_Mono } from "next/font/google";
-import { createClient } from "@/utils/supabase/server";
 import Menu from "./components/menu";
+import { createClient } from "@/utils/supabase/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,12 +33,15 @@ export default async function RootLayout({
   const showMenu = Boolean(session);
 
   return (
-    <html lang="pt-BR">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-50 text-zinc-900`}
+      >
         <div className="min-h-screen w-full flex">
+          {/* menu lateral aparece apenas se o usuário estiver logado */}
           {showMenu && <Menu />}
 
-          <main className={showMenu ? "ml-64 flex-1" : "flex-1"}>
+          <main className={showMenu ? "ml-60 flex-1" : "flex-1"}>
             {children}
           </main>
         </div>
