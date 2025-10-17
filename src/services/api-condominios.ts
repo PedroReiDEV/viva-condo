@@ -1,3 +1,5 @@
+import { createClient } from "@/utils/supabase/client";
+
 export interface ICondominio {
     id_condominio: string;
     nome_condominio: string;
@@ -10,8 +12,9 @@ export interface ICondominio {
 }
 
 export const getCondominio = async () =>{
+const supabase = await createClient();
+    const { data, error } = await supabase.from("condominio").select("*").order("id_condominio");
 
-    const response = await fetch('https://raw.githubusercontent.com/vagner107/viva-condo/refs/heads/main/src/app/condominios/api_condominio.json')
-
-    return await response.json()
+    if(error) throw new Error(error.message);
+    return data ?? [];
 }
