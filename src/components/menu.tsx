@@ -24,6 +24,7 @@ export default function Menu() {
       setLoading(true);
       await supabase.auth.signOut();
       router.replace("/");
+      router.refresh();
     } finally {
       setLoading(false);
     }

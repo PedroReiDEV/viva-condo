@@ -57,6 +57,7 @@ export default function Login() {
       }
  
       router.replace("/condominios");
+      router.refresh();
     } catch {
       setErrorMsg("Erro inesperado. Tente novamente.");
     } finally {
