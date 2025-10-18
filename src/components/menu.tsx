@@ -79,7 +79,6 @@ export default function Menu() {
           <LogOut className="h-4 w-4 text-zinc-400" />
           {loading ? "Saindo..." : "Sair"}
         </button>
-        <div className="h-px bg-zinc-200 my-3" />
       </div>
     </aside>
   );
