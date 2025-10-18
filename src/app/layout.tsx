@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Geist, Geist_Mono } from "next/font/google";
+import Menu from "./components/menu";
 import { createClient } from "@/utils/supabase/server";
 import Menu from "./components/menu";
 
@@ -40,7 +41,7 @@ export default async function RootLayout({
         <div className="min-h-screen w-full flex">
           {showMenu && <Menu />}
 
-          <main className={showMenu ? "ml-60 flex-1" : "flex-1"}>
+          <main className={showMenu ? "ml-60 p-6 flex-1" : "flex-1"}>
             {children}
           </main>
         </div>
