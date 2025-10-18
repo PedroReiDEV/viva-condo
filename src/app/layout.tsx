@@ -41,7 +41,7 @@ export default async function RootLayout({
           {/* menu lateral aparece apenas se o usuário estiver logado */}
           {showMenu && <Menu />}
 
-          <main className={showMenu ? "ml-60 flex-1" : "flex-1"}>
+          <main className={showMenu ? "ml-60 p-6 flex-1" : "flex-1"}>
             {children}
           </main>
         </div>
