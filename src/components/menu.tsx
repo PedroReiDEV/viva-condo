@@ -31,9 +31,11 @@ export default function Menu() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-60 border-r bg-white">
+    <aside className="fixed left-0 top-0 h-screen w-60 border-r border-zinc-200 bg-white">
       <div className="px-4 pt-5 pb-3">
-        <span className="text-[18px] font-semibold text-zinc-900">Viva Condo</span>
+        <span className="text-[18px] font-semibold text-zinc-900">
+          Viva Condo
+        </span>
       </div>
 
       <nav className="px-3">
@@ -49,8 +51,8 @@ export default function Menu() {
                   className={[
                     "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium select-none transition-colors",
                     active
-                      ? "bg-blue-100 text-blue-600"       
-                      : "text-zinc-600 hover:bg-zinc-100", 
+                      ? "bg-blue-100 text-blue-600"
+                      : "text-zinc-600 hover:bg-zinc-100",
                   ].join(" ")}
                 >
                   <Icon
@@ -77,6 +79,7 @@ export default function Menu() {
           <LogOut className="h-4 w-4 text-zinc-400" />
           {loading ? "Saindo..." : "Sair"}
         </button>
+        <div className="h-px bg-zinc-200 my-3" />
       </div>
     </aside>
   );
