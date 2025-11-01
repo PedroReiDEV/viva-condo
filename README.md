@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Viva Condo — Lista de Condomínios (Dropdown + Dialog + Toast + API DELETE)
 
-## Getting Started
+Este documento explica:
 
-First, run the development server:
+- A **arquitetura de pastas** e responsabilidades;
+- Os **componentes UI** (`Dropdown`, `ConfirmDialog`, `ToastProvider`);
+- O **service** (`getCondominios`, `deleteCondominio`);
+- A **rota API** (`GET` e `DELETE` em `/api/condominios`);
+- A **página** (`app/condominios/page.tsx`) e o **fluxo completo de exclusão com refresh**;
+- **Políticas RLS** no Supabase e dicas de diagnóstico;
+- Trechos de código **numerados** 🔎 para mapear exatamente o que acontece.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+> **Pré-requisitos**
+> - Next.js 14+
+> - Supabase configurado (variáveis `.env` corretas)
+> - Tailwind CSS configurado
+> - Tabela `condominio` com PK `id_condominio` (numérica)
+
+---
+
+## 1) Arquitetura de pastas
+
+```
+src/
+├─ app/
+│  ├─ layout.tsx                     # Layout global (ToastProvider + Menu)
+│  ├─ condominios/
+│  │  └─ page.tsx                    # Página com tabela, Dropdown e ConfirmDialog
+│  └─ api/
+│     └─ condominios/
+│        └─ route.ts                 # GET (lista) e DELETE (exclusão)
+│
+├─ components/
+│  ├─ dropdown.tsx                   # Botão de 3 pontinhos: Editar / Excluir
+│  ├─ confirmDialog.tsx              # Modal de confirmação (com estado "Excluindo...")
+│  └─ toastNotification.tsx          # Toast verde/vermelho com animação
+│
+└─ services/
+   └─ condominio.service.ts          # getCondominios() e deleteCondominio()
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+(Conteúdo completo conforme resposta anterior)
