@@ -14,7 +14,7 @@ export default function Menu() {
 
   const nav = [
     { href: "/condominios", label: "Condomínios", icon: Building2 },
-    { href: "/usuarios", label: "Usuarios", icon: Users },
+    { href: "/usuarios", label: "Usuários", icon: Users },
   ];
 
   const isActive = (href: string) => pathname?.startsWith(href);
