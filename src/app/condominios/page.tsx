@@ -5,12 +5,17 @@ import {
   ICondominio,
   getCondominios,
   deleteCondominio,
+  updateCondominio,
+  createCondominio,
 } from "@/services/condominio.service";
 
 import SearchBox from "@/components/search";
 import Dropdown from "@/components/dropdown";
 import ConfirmDialog from "@/components/confirmDialog";
+import EditCondominioModal from "@/components/editCondominioModal";
+import CreateCondominioModal from "@/components/createCondominioModal";
 import { useToast } from "@/components/toastNotification";
+import { Plus } from "lucide-react";
 
 export default function ListaCondominios() {
   const [condominio, setCondominios] = useState<ICondominio[]>([]);
@@ -21,11 +26,15 @@ export default function ListaCondominios() {
 
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selected, setSelected] = useState<ICondominio | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false); // 🆕 novo estado
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const [editOpen, setEditOpen] = useState(false);
+  const [editItem, setEditItem] = useState<ICondominio | null>(null);
+
+  const [createOpen, setCreateOpen] = useState(false);
 
   const { showToast } = useToast();
 
-  // ====== BUSCAR LISTA ======
   const fetchCondominios = async () => {
     try {
       setLoading(true);
@@ -43,12 +52,9 @@ export default function ListaCondominios() {
     fetchCondominios();
   }, []);
 
-  // ====== AÇÕES ======
   function handleEdit(item: ICondominio) {
-    showToast({
-      type: "info",
-      message: `Abrir edição de "${item.nome_condominio}" (EM BREVE NOS.....CINEMAS🎬🫂).`,
-    });
+    setEditItem(item);
+    setEditOpen(true);
   }
 
   function handleAskDelete(item: ICondominio) {
@@ -58,34 +64,81 @@ export default function ListaCondominios() {
 
   async function handleConfirmDelete() {
     if (!selected) return;
-    setIsDeleting(true); // 🆕 começa o loading
+    setIsDeleting(true);
 
     try {
       await deleteCondominio(selected.id_condominio);
-
-      showToast({
-        type: "success",
-        message: "Condomínio excluído com sucesso",
-      });
-
-      await fetchCondominios(); // 🔄 atualiza lista
+      showToast({ type: "success", message: "Condomínio excluído com sucesso" });
+      await fetchCondominios();
     } catch (e: any) {
       showToast({
         type: "error",
         message: e?.message ?? "Não foi possível excluir o condomínio.",
       });
     } finally {
-      setIsDeleting(false); // 🆕 termina o loading
+      setIsDeleting(false);
       setConfirmOpen(false);
       setSelected(null);
     }
   }
 
-  // ====== RENDER ======
+  async function handleSaveFromModal(updates: {
+    nome_condominio: string;
+    endereco_condominio: string;
+    cidade_condominio: string;
+    uf_condominio: string;
+    tipo_condominio: string;
+  }) {
+    if (!editItem) return;
+    try {
+      await updateCondominio(editItem.id_condominio, updates);
+      showToast({ type: "success", message: "Condomínio atualizado com sucesso" });
+      setEditOpen(false);
+      setEditItem(null);
+      await fetchCondominios();
+    } catch (e: any) {
+      showToast({
+        type: "error",
+        message: e?.message ?? "Falha ao salvar alterações.",
+      });
+      throw e;
+    }
+  }
+
+  async function handleCreateFromModal(payload: {
+    nome_condominio: string;
+    endereco_condominio: string;
+    cidade_condominio: string;
+    uf_condominio: string;
+    tipo_condominio: string;
+  }) {
+    try {
+      await createCondominio(payload);
+      showToast({ type: "success", message: "Condomínio criado com sucesso" });
+      setCreateOpen(false);
+      await fetchCondominios();
+    } catch (e: any) {
+      showToast({
+        type: "error",
+        message: e?.message ?? "Falha ao criar condomínio.",
+      });
+      throw e;
+    }
+  }
+
   return (
     <div className="p-6 max-w-full">
       <div className="mb-4 flex items-center justify-between gap-4">
         <h1 className="text-xl font-semibold">Condomínios</h1>
+
+        <button
+          type="button"
+          onClick={() => setCreateOpen(true)}
+          className="inline-flex items-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        >
+          <Plus size={16} />
+          Criar
+        </button>
       </div>
 
       <SearchBox
@@ -168,7 +221,22 @@ export default function ListaCondominios() {
         </table>
       </div>
 
-      {/* ConfirmDialog estilizado */}
+      <EditCondominioModal
+        open={editOpen}
+        data={editItem}
+        onClose={() => {
+          setEditOpen(false);
+          setEditItem(null);
+        }}
+        onSave={handleSaveFromModal}
+      />
+
+      <CreateCondominioModal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onSave={handleCreateFromModal}
+      />
+
       <ConfirmDialog
         open={confirmOpen}
         title="Excluir condomínio"
@@ -186,7 +254,7 @@ export default function ListaCondominios() {
             </>
           )
         }
-        confirmLabel={isDeleting ? "Excluindo..." : "Excluir"} // 🆕 muda o texto
+        confirmLabel={isDeleting ? "Excluindo..." : "Excluir"}
         cancelLabel="Cancelar"
         onCancel={() => {
           setConfirmOpen(false);
